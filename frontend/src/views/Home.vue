@@ -13,11 +13,11 @@
       </div>
       <span>
         <div v-for="task in tasks" :key="task._id">
-          <Task :task="{ ...task }" key="key" :showCheckbox="true" />
+          <Task :task="{ ...task }" key="key" :showCheckbox="true" @clicked="onClickChild" />
         </div>
       </span>
     </div>
-    <TaskViewer :completedTasks="completedTasks" :incompleteTasks="incompleteTasks" />
+    <TaskViewer :parentHide="hide" @clicked="onTaskViewerClicked" />
   </div>
 </template>
 <script>
@@ -37,9 +37,8 @@ export default {
   data() {
     return {
       tasks: [],
-      completedTasks: [],
-      incompleteTasks: [],
       token: '',
+      hide: false
     };
   },
   mounted() {
@@ -52,23 +51,13 @@ export default {
     fetchTasks() {
       axios.get(`${server.baseURL}/task/tasks`, { headers: { Authorization: `Bearer ${this.token}` } }).then((data) => {
         this.tasks = data.data;
-        this.tasks.forEach(task => {
-          if (task.complete) {
-            this.completedTasks.push(task);
-          } else {
-            this.incompleteTasks.push(task);
-          }
-        });
       });
     },
-    buttonClick(event) {
-      const value = event.target.value;
-      this.buttons = {
-        showComplete: false,
-        showIncomplete: false,
-        hideAll: false,
-      };
-      this.buttons[value] = true;
+    onClickChild() {
+      this.hide = true;
+    },
+    onTaskViewerClicked() {
+      this.hide = false;
     }
   },
 };

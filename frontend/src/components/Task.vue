@@ -70,6 +70,7 @@ export default {
                     `${server.baseURL}/task/update?taskID=${this.task._id}`,
                     taskData, { headers: { Authorization: `Bearer ${this.token}` } }
                 )
+            this.$emit('clicked', true)
         },
         displayDetails() {
             this.open = !this.open;
