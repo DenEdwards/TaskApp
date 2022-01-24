@@ -1,0 +1,13 @@
+{
+  "name": "programming-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "backend": "(cd backend && npm i && npm run build && npm run start:prod);",
+    "frontend": "(cd frontend && npm i &&  npm run build && npm install -g serve && serve -s dist -l 4000);"
+  },
+  "author": "",
+  "license": "ISC"
+}
