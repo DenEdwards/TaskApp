@@ -1,28 +1,43 @@
 <template>
-  <div class="Home">
-    <div class="text-center">
-      <h1>
-        <strong>Task Planner</strong>
-      </h1>
-    </div>
-    <AddTask />
-    <h2>Task List</h2>
-    <div class="task-list">
-      <div v-if="tasks.length === 0" class="d-flex justify-content-center">
-        <h2>You have no tasks to do!</h2>
-      </div>
-      <span>
-        <div v-for="task in tasks" :key="task._id">
-          <Task :task="{ ...task }" key="key" :showCheckbox="true" @clicked="onClickChild" />
-        </div>
+  <span>
+    <div v-if="token.length < 1">
+      <span class="d-flex justify-content-center">
+        <h2>Please Login to view your Tasks</h2>
       </span>
+      <h4 class="text-center mt-20">
+        <small>
+          <button class="btn btn-success" v-on:click="goToLogin()">Login</button>
+        </small>
+      </h4>
     </div>
-    <TaskViewer :parentHide="hide" @clicked="onTaskViewerClicked" />
-  </div>
+    <div v-else>
+      <div class="Home">
+        <div class="text-center">
+          <h1>
+            <strong>Task Planner</strong>
+          </h1>
+        </div>
+        <AddTask />
+        <h2>Task List</h2>
+        <div class="task-list">
+          <div v-if="tasks.length === 0" class="d-flex justify-content-center">
+            <h2>You have no tasks to do!</h2>
+          </div>
+          <span>
+            <div v-for="task in tasks" :key="task._id">
+              <Task :task="{ ...task }" key="key" :showCheckbox="true" @clicked="onClickChild" />
+            </div>
+          </span>
+        </div>
+        <TaskViewer :parentHide="hide" @clicked="onTaskViewerClicked" />
+      </div>
+    </div>
+  </span>
 </template>
 <script>
 import { server } from "../helper";
 import axios from "axios";
+import router from "../router";
 import AddTask from "../components/AddTask.vue"
 import Task from "../components/Task.vue";
 import TaskViewer from "../components/TaskViewer.vue";
@@ -58,6 +73,9 @@ export default {
     },
     onTaskViewerClicked() {
       this.hide = false;
+    },
+    goToLogin() {
+      router.push({ name: "Login" });
     }
   },
 };
